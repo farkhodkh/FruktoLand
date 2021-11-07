@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">FruktoLand</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_home">Каталог</string>
+    <string name="title_basket">Корзина</string>
+    <string name="fruits">Фрукты</string>
+    <string name="fruits_description">Всегда свежие</string>
+    <string name="vegetables">Овощи</string>
+    <string name="vegetables_description">Только что с грядки</string>
+    <string name="berries">Ягоды</string>
+    <string name="berries_description">Полно витаминов</string>
+    <string name="salads">Салаты, грибы</string>
+    <string name="salads_description">Вечно зеленые</string>
+    <string name="meat">Мясо</string>
+    <string name="meat_description">Тут костей нет</string>
+    <string name="nuts">Сухофрукты</string>
+    <string name="nuts_description">Разнообразие витаминов</string>
+    <string name="others">Прочее</string>
+    <string name="others_description">Молоко, масло и пр.</string>
+    <string name="title_goods">Товары</string>
+</resources>

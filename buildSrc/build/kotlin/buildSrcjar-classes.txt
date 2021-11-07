@@ -1,0 +1,1 @@
+/Users/farkhod/AndroidStudioProjects/FruktoLand/buildSrc/build/classes/kotlin/main/Versions.class

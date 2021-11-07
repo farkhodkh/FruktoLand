@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HomeViewItem">
+        <attr name="android:textColor" format="integer"/>
+        <attr name="imageIcon" format="integer"/>
+        <attr name="imageIconBackground" format="integer"/>
+        <attr name="imageText" format="string"/>
+        <attr name="imageId" format="integer"/>
+        <attr name="imageTextDescription" format="string"/>
+    </declare-styleable>
+</resources>

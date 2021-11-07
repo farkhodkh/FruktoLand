@@ -1,0 +1,16 @@
+//dependencyResolutionManagement {
+//    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+//    repositories {
+//        google()
+//        mavenCentral()
+//        jcenter() // Warning: this repository is going to shut down soon
+//    }
+//}
+rootProject.name = "FruktoLand"
+include(
+        ":app"
+//        ":core-model",
+//        ":feature-remote-config",
+//        ":feature-persistence-api",
+//        ":feature-persistence-room"
+)
