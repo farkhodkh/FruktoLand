@@ -1,4 +1,4 @@
-package com.fruktoland.app.data.persistence
+package com.fruktoland.app.data.persistence.items
 
 data class CatalogItem(
     var id: Long,

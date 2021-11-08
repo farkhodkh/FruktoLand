@@ -1,7 +1,10 @@
 package com.fruktoland.app.ui.view
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -48,17 +51,4 @@ class MainActivity : AppCompatActivity(), NavigationView {
     override fun onFragmentbackClick() {
         navController.popBackStack()
     }
-
-//    override inline fun <reified T: Any> putDataInCurrentBackStackEntry(dataKet: String, data: T) {
-//        when (T::class.java) {
-//            is Parcelable -> {
-//                navController.currentBackStackEntry?.arguments?.putParcelable(dataKet, data as Parcelable)
-//            }
-//        }
-//
-//    }
-//
-//    override fun <T: Parcelable> getDataFromPreviousBackStackEntry(dataKet: String): Parcelable? {
-//        return navController.previousBackStackEntry?.arguments?.getParcelable<T>(dataKet)
-//    }
 }

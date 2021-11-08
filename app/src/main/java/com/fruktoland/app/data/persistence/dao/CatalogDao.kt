@@ -13,4 +13,7 @@ internal interface CatalogDao {
 
     @Query("SELECT * FROM ${CatalogModule.Database.TABLE_NAME} WHERE ${CatalogModule.Database.COL_CATEGORY} = :categoryName ORDER BY ${CatalogModule.Database.COL_NAME}")
     suspend fun getAllCatalogByName(categoryName: String): List<CatalogModule>?
+
+    @Query("SELECT * FROM ${CatalogModule.Database.TABLE_NAME} ORDER BY ${CatalogModule.Database.COL_NAME}")
+    suspend fun getAllCatalog(): List<CatalogModule>?
 }

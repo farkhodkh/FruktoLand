@@ -3,10 +3,10 @@ package com.fruktoland.app.data.persistence.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.fruktoland.app.data.persistence.items.CatalogItem
+import com.fruktoland.app.data.persistence.items.BasketItem
 
-@Entity(tableName = CatalogModule.Database.TABLE_NAME)
-data class CatalogModule(
+@Entity(tableName = BasketModule.Database.TABLE_NAME)
+data class BasketModule(
     @PrimaryKey
     @ColumnInfo(name = Database.COL_ID)
     var id: Long,
@@ -22,11 +22,11 @@ data class CatalogModule(
     var price: Double,
     @ColumnInfo(name = Database.COL_UNIT)
     var unit: String,
-    @ColumnInfo(name = BasketModule.Database.COL_QTTY)
+    @ColumnInfo(name = Database.COL_QTTY)
     var qtty: Double
 ) {
     object Database {
-        const val TABLE_NAME = "frukto_land_catalog_items"
+        const val TABLE_NAME = "frukto_land_basket_items"
 
         const val COL_ID = "id"
         const val COL_NAME = "name"
@@ -35,10 +35,11 @@ data class CatalogModule(
         const val COL_IMAGE_ADDRESS = "image_address"
         const val COL_PRICE = "price"
         const val COL_UNIT = "unit"
+        const val COL_QTTY = "qtty"
     }
 }
 
-fun CatalogItem.toCatalogModule() = CatalogModule(
+fun BasketItem.toBasketModule() = BasketModule(
     this.id,
     this.name,
     this.category,
@@ -49,18 +50,7 @@ fun CatalogItem.toCatalogModule() = CatalogModule(
     this.qtty
 )
 
-fun CatalogModule.toCatalogItem() = CatalogItem(
-    this.id,
-    this.name,
-    this.category,
-    this.description,
-    this.imageAddress,
-    this.price,
-    this.unit,
-    this.qtty
-)
-
-fun CatalogItem.toBasketModule() = BasketModule(
+fun BasketModule.toBasketItem() = BasketItem(
     this.id,
     this.name,
     this.category,

@@ -3,8 +3,8 @@ package com.fruktoland.app.di
 import android.content.Context
 import androidx.room.Room
 import com.fruktoland.app.data.persistence.room.FruktoLandDataBase
-import com.fruktoland.app.ui.view.MainFragmentInteractor
-import com.fruktoland.app.ui.view.MainFragmentInteractorImpl
+import com.fruktoland.app.ui.view.DataBaseInteractor
+import com.fruktoland.app.ui.view.DataBaseInteractorImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,11 +15,12 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object AppModule {
     @Provides
-    fun providesMainFragmentInteractor(db: FruktoLandDataBase): MainFragmentInteractor =
-        MainFragmentInteractorImpl(db)
+    fun providesMainFragmentInteractor(db: FruktoLandDataBase): DataBaseInteractor =
+        DataBaseInteractorImpl(db)
 
     @Provides
-    fun providesFruktoLandDataBase(@ApplicationContext appContext: Context) : FruktoLandDataBase = Room.databaseBuilder(
+    fun providesFruktoLandDataBase(@ApplicationContext appContext: Context): FruktoLandDataBase =
+        Room.databaseBuilder(
             appContext,
             FruktoLandDataBase::class.java,
             FruktoLandDataBase.DATABASE_NAME

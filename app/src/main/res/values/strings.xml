@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">FruktoLand</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="title_home">Каталог</string>
     <string name="title_basket">Корзина</string>
     <string name="fruits">Фрукты</string>

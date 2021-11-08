@@ -1,56 +1,36 @@
 package com.fruktoland.app.common
 
-import com.fruktoland.app.data.persistence.CatalogItem
+import com.fruktoland.app.data.persistence.items.CatalogItem
 
 object Const {
     fun getEmptyList(): List<CatalogItem> = listOf(
         CatalogItem(
-            0L,
-            "Арбуз",
-            "Ягода",
+            1L,
+            "",
+            "berries",
             "Вкусная ягода",
             "ic_no_phote",
-            150.00,
+            0.00,
             "кг.",
-            1.20
+            0.0
         ),
         CatalogItem(
-            0L,
-            "Яблоки (Голден)",
-            "Фрукты",
+            2L,
+            "",
+            "fruits",
             "Источник железа",
             "ic_no_phote",
-            185.45,
+            0.0,
             "кг.",
-            23.11
+            0.0
         ),
         CatalogItem(
-            0L,
-            "Манго",
-            "Фрукты",
-            "Вкусная ягода",
-            "ic_no_phote",
-            150.00,
-            "шт.",
-            1.0
-        ),
-        CatalogItem(
-            0L,
-            "Яблоки (Голден)",
-            "Фрукты",
+            3L,
+            "",
+            "fruits",
             "Источник железа",
             "ic_no_phote",
-            185.45,
-            "шт.",
-            3.0
-        ),
-        CatalogItem(
-            0L,
-            "Клубника",
-            "Ягода",
-            "Кладизь витаминов",
-            "ic_no_phote",
-            160.67,
+            0.0,
             "кг.",
             0.0
         )

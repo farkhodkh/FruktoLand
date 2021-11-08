@@ -117,7 +117,6 @@ dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     kapt("androidx.room:room-compiler:${Versions.roomVersion}")
     implementation("androidx.room:room-ktx:${Versions.roomVersion}")
-    implementation ("androidx.room:room-coroutines:${Versions.roomVersion}")
 
 //    //Dagger - Hilt
 //    implementation("com.google.dagger:hilt-android:${Versions.hiltVersion}")
@@ -146,13 +145,16 @@ dependencies {
 //    //Work
 //    implementation("androidx.work:work-runtime-ktx:2.4.0")
 //
-//    //Debug only
-//    debugImplementation("com.amitshekhar.android:debug-db:1.0.6")
+    //Debug only
+    debugImplementation("com.amitshekhar.android:debug-db:1.0.6")
 
     // Database (ROOM) - Test helpers
     testImplementation("androidx.room:room-testing:${Versions.roomVersion}")
     androidTestImplementation("androidx.room:room-testing:${Versions.roomVersion}")
 
+    //Input Mask library
+    implementation ("com.redmadrobot:input-mask-android:${Versions.inputMaskVersion}")
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
 }
 
 kapt {

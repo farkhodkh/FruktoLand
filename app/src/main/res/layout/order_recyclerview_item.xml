@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:hint="Наименование"
+        android:inputType="textMultiLine"
+        android:maxLength="200"
+        android:maxLines="2"
+        android:minHeight="48dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="Яблоки (Голден)" />
+
+    <EditText
+        android:id="@+id/etxtQtty"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp"
+        tools:text="100.00" />
+
+    <TextView
+        android:id="@+id/txtVUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:textSize="16sp"
+        tools:text="кг." />
+
+    <TextView
+        android:id="@+id/txtVTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        tools:text="200" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:text=" руб."
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text=" руб." />
+</LinearLayout>

@@ -2,7 +2,7 @@ object Versions {
     const val minSdkVersion = 21
     const val compileSdkVersion = 31
     const val buildToolsVersion = "30.0.3"
-    const val kotlinVersion = "1.4.32"
+    const val kotlinVersion = "1.5.31"
     const val slf4jVersion ="1.7.9"
     const val androidxConstraintlayout = "2.1.1"
     const val androidxCoreKtx = "1.5.0"
@@ -25,4 +25,6 @@ object Versions {
     const val firebaseVersion = "29.0.0"
     const val firebaseAnalyticsVersion = "20.0.0"
     const val firebaseMessagingVersion = "23.0.0"
+    const val inputMaskVersion = "4.2.1"
+    const val stdlibVersion = "1.5.30"
 }

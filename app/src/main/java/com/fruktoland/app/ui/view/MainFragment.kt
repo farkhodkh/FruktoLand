@@ -12,11 +12,13 @@ import com.fruktoland.app.R
 import com.fruktoland.app.common.*
 import com.fruktoland.app.databinding.FragmentMainBinding
 import com.fruktoland.app.extensions.navigate
-import com.fruktoland.app.ui.state.CatalogDataUpdate
-import com.fruktoland.app.ui.state.Default
+import com.fruktoland.app.ui.state.MainDefault
+import com.fruktoland.app.ui.state.MainError
 import com.fruktoland.app.ui.viewModel.MainFragmentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
+@AndroidEntryPoint
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
 
@@ -52,17 +54,11 @@ class MainFragment : Fragment() {
     suspend fun initObservers() {
         viewModel.state.collect { viewState ->
             when (viewState) {
-                is Default -> {
+                is MainDefault -> {
 
                 }
-                is Error -> {
+                is MainError -> {
                     showToastMessage(viewState.description)
-                }
-                is CatalogDataUpdate -> {
-
-                }
-                else -> {
-
                 }
             }
         }

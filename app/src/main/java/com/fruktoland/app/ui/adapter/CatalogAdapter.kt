@@ -8,13 +8,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fruktoland.app.R
-import com.fruktoland.app.data.persistence.CatalogItem
+import com.fruktoland.app.data.persistence.items.CatalogItem
+import com.fruktoland.app.ui.view.DataBaseInteractor
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class CatalogAdapter(
-    var catalogList: List<CatalogItem>
+@Singleton
+class CatalogAdapter @Inject constructor(
+    var interactor: DataBaseInteractor
 ) : RecyclerView.Adapter<CatalogAdapter.CatalogViewHolder>() {
 
-
+    var catalogList: List<CatalogItem> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {
         val itemView = LayoutInflater
             .from(parent.context)
@@ -39,33 +43,46 @@ class CatalogAdapter(
         private var btnPlus: ImageButton = itemView.findViewById(R.id.btnPlus)
 
         fun bind(catalogItem: CatalogItem) {
-            btnMinus.setOnClickListener { onButtonClick(false) }
-            btnPlus.setOnClickListener { onButtonClick(true) }
+            btnMinus.setOnClickListener { onButtonClick(false, catalogItem) }
+            btnPlus.setOnClickListener { onButtonClick(true, catalogItem) }
 //            imageView.setImageBitmap(R.drawable.ic_no_phote)
             txtViewName.text = catalogItem.name
             txtViewPrice.text = catalogItem.price.toString()
             textViewUnit.text = "цена за ${catalogItem.unit}"
             txtViewDescription.text = catalogItem.description
+            txtViewQtty.text = catalogItem.qtty.toString()
 
-//            itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else 0x00000000)
-//            itemImageView.setImageResource(stateImageResource)
-//
-//            itemContainer.setOnClickListener {
-//                selectedPosition = adapterPosition
-//                onInvokeConfiguration(configuration)
-//            }
-//            serverUrl.text = configuration.serverUrl
-//            updateResultTextView.isVisible = updateResultText.isNotEmpty()
-//            updateResultTextView.text = updateResultText
-            val b = 0
+            btnMinus.isEnabled = !txtViewName.text.isEmpty()
+            btnPlus.isEnabled = !txtViewName.text.isEmpty()
+
         }
 
-        fun onButtonClick(add: Boolean) {
-            txtViewQtty.text = when (add) {
-                true -> (txtViewQtty.text.toString().toInt() + 1).toString()
-                else -> (maxOf(txtViewQtty.text.toString().toInt() - 1, 0)).toString()
-            }
+        private fun onButtonClick(add: Boolean, catalogItem: CatalogItem) {
+            when (add) {
+                true -> {
+                    val qtty = txtViewQtty.text.toString().toDouble() + 1.0
+                    txtViewQtty.text = (qtty).toString()
+                    catalogItem.qtty = qtty
+                    interactor.addToBasket(catalogItem)
+                }
+                else -> {
+                    (txtViewQtty.text.toString().toDouble() - 1.0).also { qtty ->
+                        val qttyText = when {
+                            qtty <= 0 -> {
+                                interactor.removeFromBasket(catalogItem)
+                                "0.0"
+                            }
+                            else -> {
+                                catalogItem.qtty = qtty
+                                interactor.addToBasket(catalogItem)
+                                qtty.toString()
+                            }
+                        }
 
+                        txtViewQtty.text = qttyText
+                    }
+                }
+            }
         }
     }
 }
