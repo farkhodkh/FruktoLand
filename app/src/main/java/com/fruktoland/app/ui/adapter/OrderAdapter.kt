@@ -3,19 +3,36 @@ package com.fruktoland.app.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.fruktoland.app.R
 import com.fruktoland.app.data.persistence.items.BasketItem
+import com.fruktoland.app.data.persistence.model.toBasketModule
+import com.fruktoland.app.ui.view.DataBaseInteractor
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.text.DecimalFormat
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.properties.Delegates
 
 @Singleton
-class OrderAdapter @Inject constructor() : RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
+class OrderAdapter @Inject constructor(
+    private var mainInteractor: DataBaseInteractor
+) : RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
+    private val _totalSumm = MutableStateFlow("0.00 р.")
+    val totalSumm: StateFlow<String> = _totalSumm
+
+    val decFormatter = DecimalFormat("#,###.##")
+
     var orderList: List<BasketItem> = emptyList()
+    set(value) {
+        field = value
+        _totalSumm.tryEmit(decFormatter.format(getSumm()) + " р.")
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -33,28 +50,41 @@ class OrderAdapter @Inject constructor() : RecyclerView.Adapter<OrderAdapter.Ord
 
     override fun getItemCount() = orderList.size
 
+    fun getSumm(): Double = orderList.sumOf { it.price * it.qtty }
+
     inner class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val decFormatter = DecimalFormat("#,###.##")
+
         var txtName: TextView = itemView.findViewById(R.id.txtName)
         var txtVTotal: TextView = itemView.findViewById(R.id.txtVTotal)
         var txtVUnit: TextView = itemView.findViewById(R.id.txtVUnit)
-        var etxtQtty: EditText = itemView.findViewById(R.id.etxtQtty)
+        var txtViewQtty: TextView = itemView.findViewById(R.id.txtViewQtty)
+        var btnMinus: ImageButton = itemView.findViewById(R.id.btnMinus)
+        var btnPlus: ImageButton = itemView.findViewById(R.id.btnPlus)
 
         fun bind(basketItem: BasketItem) {
             txtName.text = basketItem.name
             txtVUnit.text = basketItem.unit
             txtVTotal.text = (basketItem.price * basketItem.qtty).toString()
-            etxtQtty.setText(basketItem.qtty.toString())
-            etxtQtty.doOnTextChanged { text, start, before, count ->
-                when {
-                    text.isNullOrEmpty() -> {
+            txtViewQtty.text = basketItem.qtty.toString()
 
-                    }
-                    else -> {
-                        basketItem.qtty = text.toString().toDouble()
-                        txtVTotal.text = decFormatter.format(basketItem.price * basketItem.qtty)
-                    }
-                }
+            btnPlus.setOnClickListener {
+                basketItem.qtty = basketItem.qtty + 1.0
+                txtVTotal.text = decFormatter.format(basketItem.price * basketItem.qtty)
+
+                txtViewQtty.text = basketItem.qtty.toString()
+                _totalSumm.tryEmit(decFormatter.format(getSumm()) + " р.")
+
+                mainInteractor.addToBasket(basketItem)
+            }
+
+            btnMinus.setOnClickListener {
+                basketItem.qtty = maxOf(basketItem.qtty - 1.0, 0.0)
+                txtVTotal.text = decFormatter.format(basketItem.price * basketItem.qtty)
+
+                txtViewQtty.text = basketItem.qtty.toString()
+                _totalSumm.tryEmit(decFormatter.format(getSumm()) + " р.")
+
+                mainInteractor.addToBasket(basketItem)
             }
         }
     }

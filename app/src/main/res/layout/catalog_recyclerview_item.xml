@@ -29,6 +29,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginStart="4dp"
-                android:text=" руб."
+                android:text=" р."
                 android:textSize="10sp" />
         </LinearLayout>
 
@@ -87,7 +89,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:gravity="center"
+            android:gravity="center|bottom"
             android:layout_height="wrap_content"
             android:layout_margin="4dp">
             <ImageButton

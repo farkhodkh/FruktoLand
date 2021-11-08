@@ -18,6 +18,7 @@ interface DataBaseInteractor {
     fun getCatalogItem(catalogName: String?): Flow<List<CatalogItem>?>
     fun addCatalogItems(list: List<CatalogModule>)
     fun addToBasket(item: CatalogItem)
+    fun addToBasket(item: BasketItem)
     fun removeFromBasket(item: CatalogItem)
     fun getAllFromBasket(): Flow<List<BasketItem>?>
 }
@@ -84,5 +85,11 @@ class DataBaseInteractorImpl(private val db: FruktoLandDataBase) : DataBaseInter
         )
 
         awaitClose { }
+    }
+
+    override fun addToBasket(item: BasketItem) {
+        scope.launch {
+            db.basketDao().insert(item.toBasketModule())
+        }
     }
 }

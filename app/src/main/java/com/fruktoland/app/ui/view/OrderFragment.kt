@@ -8,17 +8,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fruktoland.app.databinding.FragmentOrderBinding
+import com.fruktoland.app.extensions.navigate
 import com.fruktoland.app.ui.adapter.OrderAdapter
 import com.fruktoland.app.ui.state.OrderDataUpdate
 import com.fruktoland.app.ui.state.OrderEmpty
 import com.fruktoland.app.ui.state.OrderError
 import com.fruktoland.app.ui.viewModel.OrderFragmentViewModel
-import com.redmadrobot.inputmask.MaskedTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,22 +36,6 @@ class OrderFragment : Fragment() {
     ): View {
         binding = FragmentOrderBinding.inflate(inflater, container, false)
 
-        binding.tilPhone.editText?.let {
-            MaskedTextChangedListener.installOn(
-                editText = it,
-                primaryFormat = PRIMARY_FORMAT,
-                valueListener = object : MaskedTextChangedListener.ValueListener {
-                    override fun onTextChanged(
-                        maskFilled: Boolean,
-                        extractedValue: String,
-                        formattedValue: String
-                    ) {
-                        binding.btnConfirm.isEnabled = maskFilled
-                    }
-                })
-        }
-
-
         binding.orderListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.orderListRecyclerView.adapter = adapter
 
@@ -63,12 +48,25 @@ class OrderFragment : Fragment() {
             initObservers()
         }
 
+        binding.btnConfirm.setOnClickListener {
+            navigate(
+                OrderFragmentDirections.actionOrderFragmentToConfirmFragment()
+            )
+        }
         return binding.root
     }
 
     suspend fun initObservers() {
+
+        adapter
+            .totalSumm
+            .onEach { total ->
+                binding.txtVTotalSumm.text = total
+            }
+            .launchIn(lifecycleScope)
+
         viewModel.state.collect { viewState ->
-            when(viewState) {
+            when (viewState) {
                 is OrderEmpty -> {
                     showToastMessage(viewState.description)
                 }
@@ -87,9 +85,5 @@ class OrderFragment : Fragment() {
         requireContext().also { context ->
             Toast.makeText(context, description, Toast.LENGTH_LONG).show()
         }
-    }
-
-    companion object {
-        const val PRIMARY_FORMAT = "+7 [000] [000]-[00]-[00]"
     }
 }
