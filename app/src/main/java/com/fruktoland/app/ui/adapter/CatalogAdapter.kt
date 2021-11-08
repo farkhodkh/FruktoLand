@@ -8,8 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fruktoland.app.R
+import com.fruktoland.app.common.Const
 import com.fruktoland.app.data.persistence.items.CatalogItem
 import com.fruktoland.app.ui.view.DataBaseInteractor
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,6 +20,7 @@ class CatalogAdapter @Inject constructor(
     var interactor: DataBaseInteractor
 ) : RecyclerView.Adapter<CatalogAdapter.CatalogViewHolder>() {
 
+    private val picasso = Picasso.get()
     var catalogList: List<CatalogItem> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {
         val itemView = LayoutInflater
@@ -45,7 +48,11 @@ class CatalogAdapter @Inject constructor(
         fun bind(catalogItem: CatalogItem) {
             btnMinus.setOnClickListener { onButtonClick(false, catalogItem) }
             btnPlus.setOnClickListener { onButtonClick(true, catalogItem) }
-//            imageView.setImageBitmap(R.drawable.ic_no_phote)
+            if (!catalogItem.imageAddress.isNullOrEmpty()) {
+                picasso.load("${Const.BASE_URL}${catalogItem.imageAddress}").into(imageView)
+            } else {
+                imageView.setImageResource(R.drawable.ic_no_phote)
+            }
             txtViewName.text = catalogItem.name
             txtViewPrice.text = catalogItem.price.toString()
             textViewUnit.text = "цена за ${catalogItem.unit}"
@@ -54,7 +61,6 @@ class CatalogAdapter @Inject constructor(
 
             btnMinus.isEnabled = !txtViewName.text.isEmpty()
             btnPlus.isEnabled = !txtViewName.text.isEmpty()
-
         }
 
         private fun onButtonClick(add: Boolean, catalogItem: CatalogItem) {

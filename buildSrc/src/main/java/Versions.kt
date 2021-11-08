@@ -27,4 +27,8 @@ object Versions {
     const val firebaseMessagingVersion = "23.0.0"
     const val inputMaskVersion = "4.2.1"
     const val stdlibVersion = "1.5.30"
+    const val retrofitVersion = "2.9.0"
+    const val gsonVersion = "2.8.9"
+    const val picassoVersion = "2.71828"
+    const val retrofit2CoroutinesVersion = "0.9.2"
 }

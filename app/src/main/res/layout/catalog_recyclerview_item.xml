@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_margin="4dp"
-            app:srcCompat="@drawable/ic_no_phote" />
+            tools:srcCompat="@drawable/ic_no_phote" />
 
         <TextView
             android:layout_margin="4dp"

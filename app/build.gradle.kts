@@ -155,6 +155,16 @@ dependencies {
     //Input Mask library
     implementation ("com.redmadrobot:input-mask-android:${Versions.inputMaskVersion}")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
+
+    //Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
+    implementation("com.squareup.retrofit2:converter-gson:${Versions.retrofitVersion}")
+    implementation("com.google.code.gson:gson:${Versions.gsonVersion}")
+    implementation ("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${Versions.retrofit2CoroutinesVersion}")
+
+    //Picasso
+    implementation ("com.squareup.picasso:picasso:${Versions.picassoVersion}")
+
 }
 
 kapt {

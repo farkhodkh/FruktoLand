@@ -45,7 +45,6 @@ class CatalogFragment : Fragment() {
         adapter.notifyDataSetChanged()
 
         lifecycleScope.launchWhenResumed {
-            viewModel.addCatalogItems(catalogName)
             setStateDownloading(true)
             viewModel
                 .getCatalogItems(catalogName)

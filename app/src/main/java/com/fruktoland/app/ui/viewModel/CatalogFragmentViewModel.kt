@@ -4,12 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fruktoland.app.common.CatalogNames
 import com.fruktoland.app.common.Const
+import com.fruktoland.app.data.mapper.CatalogItemResponce
+import com.fruktoland.app.data.mapper.toCatalogItem
+import com.fruktoland.app.data.persistence.items.CatalogItem
 import com.fruktoland.app.data.persistence.model.toCatalogModule
 import com.fruktoland.app.ui.state.*
 import com.fruktoland.app.ui.view.DataBaseInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,27 +24,15 @@ class CatalogFragmentViewModel @Inject constructor(private var interactor: DataB
     val state: StateFlow<CatalogFragmentState> = _state
 
     fun getCatalogItems(catalogName: CatalogNames?) {
-         interactor
-                .getCatalogItem(catalogName?.name)
-                .catch { error ->
-                    error.localizedMessage?.let { errorMessage ->
-                        logger.error(errorMessage)
-                        if (errorMessage.contentEquals("Empty list"))
-                            _state.tryEmit(CatalogEmpty("Каталог в процессе пополнения", Const.getEmptyList()))
-                        else
-                            _state.tryEmit(CatalogError("Ошибка при обновлении каталога"))
-                    }
-                }
-                .onEach { list ->
-                    logger.debug("Catalog data updated: $list")
-                    _state.tryEmit(CatalogDataUpdate("Data updated", list.orEmpty()))
-                }
-                .launchIn(viewModelScope)
-    }
+        viewModelScope.launch {
+            val catalogList: List<CatalogItem> = interactor.getCatalogItems(catalogName?.name)
 
-    fun addCatalogItems(catalogName: CatalogNames?) {
-        interactor
-            .addCatalogItems(Const.getEmptyList().map { it.toCatalogModule() })
+            if (catalogList.isNotEmpty()) {
+                _state.tryEmit(CatalogDataUpdate("Каталог обновлен", catalogList))
+            } else {
+                _state.tryEmit(CatalogEmpty("Каталог в процессе пополнения", Const.getEmptyList()))
+            }
+        }
     }
 
     val logger = LoggerFactory.getLogger(this::class.java.canonicalName)
