@@ -3,14 +3,14 @@ package com.fruktoland.app.ui.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fruktoland.app.ui.state.*
-import com.fruktoland.app.ui.view.DataBaseInteractor
+import com.fruktoland.app.ui.view.ModuleInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 @HiltViewModel
-class OrderFragmentViewModel @Inject constructor(private var interactor: DataBaseInteractor) :
+class OrderFragmentViewModel @Inject constructor(private var interactor: ModuleInteractor) :
     ViewModel() {
     val logger = LoggerFactory.getLogger(this::class.java.canonicalName)
 

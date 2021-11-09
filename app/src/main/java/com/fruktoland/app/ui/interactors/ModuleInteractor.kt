@@ -1,6 +1,7 @@
 package com.fruktoland.app.ui.view
 
 import com.fruktoland.app.data.api.FruktoLandApiService
+import com.fruktoland.app.data.mapper.ClientOrderRequest
 import com.fruktoland.app.data.mapper.toCatalogItem
 import com.fruktoland.app.data.persistence.items.BasketItem
 import com.fruktoland.app.data.persistence.items.CatalogItem
@@ -16,19 +17,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 
-interface DataBaseInteractor {
+interface ModuleInteractor {
     suspend fun getCatalogItems(catalogName: String?): List<CatalogItem>
     suspend fun addCatalogItems(list: List<CatalogModule>)
     fun addToBasket(item: CatalogItem)
     fun addToBasket(item: BasketItem)
     fun removeFromBasket(item: CatalogItem)
+    fun removeFromBasket(item: BasketItem)
     fun getAllFromBasket(): Flow<List<BasketItem>?>
+    fun confirmOrder(order: ClientOrderRequest)
 }
 
-class DataBaseInteractorImpl(
+class ModuleInteractorImpl(
     private val db: FruktoLandDataBase,
     private val apiService: FruktoLandApiService
-) : DataBaseInteractor {
+) : ModuleInteractor {
     val scope = CoroutineScope(Dispatchers.IO)
 
     override suspend fun getCatalogItems(catalogName: String?): List<CatalogItem> {
@@ -78,6 +81,12 @@ class DataBaseInteractorImpl(
         }
     }
 
+    override fun removeFromBasket(item: BasketItem) {
+        scope.launch {
+            db.basketDao().remove(item.toBasketModule())
+        }
+    }
+
     override fun getAllFromBasket(): Flow<List<BasketItem>?> = callbackFlow {
         offer(
             db
@@ -91,6 +100,18 @@ class DataBaseInteractorImpl(
     override fun addToBasket(item: BasketItem) {
         scope.launch {
             db.basketDao().insert(item.toBasketModule())
+        }
+    }
+
+    override fun confirmOrder(order: ClientOrderRequest) {
+        scope.launch {
+            val responce = apiService
+                .service
+                .sendOrder(order)
+                .await()
+            if (responce.isSuccessful) {
+                db.basketDao().removeAllItems()
+            }
         }
     }
 }

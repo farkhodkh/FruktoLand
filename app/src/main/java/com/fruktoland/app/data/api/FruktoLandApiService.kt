@@ -34,15 +34,6 @@ class FruktoLandApiService {
         }
 
         fun getApiService(): FruktoLandApi {
-//            val client = OkHttpClient().newBuilder()
-//                .build()
-//            val request: Request = Builder()
-//                .url("http://217.174.101.27/frukto-land/hs/exchange/fruktoland/getstock?catalogName=fruits")
-//                .method("GET", null)
-//                .addHeader("Authorization", "Basic bmV0d29yazpXRnVCWVdOdE5Y")
-//                .build()
-//            val response = client.newCall(request).execute()
-
             val gson: Gson = GsonBuilder().setLenient().create()
             val retrofit: Retrofit = Retrofit.Builder()
                 .baseUrl(Const.BASE_URL)
@@ -60,8 +51,6 @@ class FruktoLandApiService {
                 var okHttpClient = OkHttpClient()
                 okHttpClient = okHttpClient.newBuilder()
                     .addInterceptor(authInterceptor)
-//                    .sslSocketFactory(sslSocketFactory)
-//                    .hostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
                     .build()
 
                 return okHttpClient
@@ -71,32 +60,3 @@ class FruktoLandApiService {
         }
     }
 }
-
-
-//                val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
-//                    @Throws(CertificateException::class)
-//                    override fun checkClientTrusted(
-//                        chain: Array<java.security.cert.X509Certificate>,
-//                        authType: String
-//                    ) {
-//                    }
-//
-//                    @Throws(CertificateException::class)
-//                    override fun checkServerTrusted(
-//                        chain: Array<java.security.cert.X509Certificate>,
-//                        authType: String
-//                    ) {
-//                    }
-//
-//                    override fun getAcceptedIssuers(): Array<X509Certificate?> {
-//                        return arrayOfNulls(0)
-//                    }
-//                })
-//
-//                val sslContext = SSLContext.getInstance("TLS")
-//                sslContext.init(
-//                    null, trustAllCerts,
-//                    java.security.SecureRandom()
-//                )
-//                val sslSocketFactory = sslContext
-//                    .socketFactory

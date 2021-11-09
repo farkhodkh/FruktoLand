@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fruktoland.app.R
 import com.fruktoland.app.common.Const
 import com.fruktoland.app.data.persistence.items.CatalogItem
-import com.fruktoland.app.ui.view.DataBaseInteractor
+import com.fruktoland.app.ui.view.ModuleInteractor
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CatalogAdapter @Inject constructor(
-    var interactor: DataBaseInteractor
+    var interactor: ModuleInteractor
 ) : RecyclerView.Adapter<CatalogAdapter.CatalogViewHolder>() {
 
     private val picasso = Picasso.get()

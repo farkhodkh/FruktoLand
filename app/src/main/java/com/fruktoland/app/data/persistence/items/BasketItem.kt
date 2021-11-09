@@ -1,6 +1,6 @@
 package com.fruktoland.app.data.persistence.items
 
-class BasketItem(
+data class BasketItem(
     var id: Long,
     var name: String,
     var category: String,

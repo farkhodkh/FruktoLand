@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fruktoland.app.databinding.FragmentOrderBinding
 import com.fruktoland.app.extensions.navigate
 import com.fruktoland.app.ui.adapter.OrderAdapter
@@ -36,8 +38,39 @@ class OrderFragment : Fragment() {
     ): View {
         binding = FragmentOrderBinding.inflate(inflater, container, false)
 
+        initView()
+
+        return binding.root
+    }
+
+    private fun initView() {
         binding.orderListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.orderListRecyclerView.adapter = adapter
+
+        val simpleItemTouchCallback =
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return true
+                }
+
+                override fun getSwipeDirs(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+                ): Int {
+                    return ItemTouchHelper.LEFT
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    adapter.removePosition(viewHolder.adapterPosition)
+                }
+            }
+
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(binding.orderListRecyclerView)
 
         lifecycleScope.launchWhenResumed {
             viewModel
@@ -53,13 +86,12 @@ class OrderFragment : Fragment() {
                 OrderFragmentDirections.actionOrderFragmentToConfirmFragment()
             )
         }
-        return binding.root
     }
 
     suspend fun initObservers() {
 
         adapter
-            .totalSumm
+            .totalSum
             .onEach { total ->
                 binding.txtVTotalSumm.text = total
             }
@@ -74,9 +106,10 @@ class OrderFragment : Fragment() {
                     showToastMessage(viewState.description)
                 }
                 is OrderDataUpdate -> {
-                    adapter.orderList = viewState.itemsList
-                    adapter.notifyDataSetChanged()
+                    adapter.differ.submitList(viewState.itemsList.toMutableList())
+                    //binding.orderListRecyclerView.smoothScrollToPosition(adapter.itemCount)
                 }
+                else -> {}
             }
         }
     }

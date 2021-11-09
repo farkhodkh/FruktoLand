@@ -4,21 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fruktoland.app.common.CatalogNames
 import com.fruktoland.app.common.Const
-import com.fruktoland.app.data.mapper.CatalogItemResponce
-import com.fruktoland.app.data.mapper.toCatalogItem
 import com.fruktoland.app.data.persistence.items.CatalogItem
-import com.fruktoland.app.data.persistence.model.toCatalogModule
 import com.fruktoland.app.ui.state.*
-import com.fruktoland.app.ui.view.DataBaseInteractor
+import com.fruktoland.app.ui.view.ModuleInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class CatalogFragmentViewModel @Inject constructor(private var interactor: DataBaseInteractor) : ViewModel() {
+class CatalogFragmentViewModel @Inject constructor(private var interactor: ModuleInteractor) : ViewModel() {
 
     private val _state = MutableStateFlow<CatalogFragmentState>(CatalogDefault("Default state"))
     val state: StateFlow<CatalogFragmentState> = _state

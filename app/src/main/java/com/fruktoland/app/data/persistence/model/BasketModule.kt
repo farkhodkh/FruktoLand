@@ -3,6 +3,7 @@ package com.fruktoland.app.data.persistence.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.fruktoland.app.data.mapper.CatalogItemMapper
 import com.fruktoland.app.data.persistence.items.BasketItem
 
 @Entity(tableName = BasketModule.Database.TABLE_NAME)
@@ -59,4 +60,16 @@ fun BasketModule.toBasketItem() = BasketItem(
     this.price,
     this.unit,
     this.qtty
+)
+
+fun BasketItem.toCatalogItemMapper() = CatalogItemMapper(
+    "",
+    this.name,
+    this.category,
+    this.qtty.toString(),
+    this.id.toString(),
+    "",
+    "",
+    "",
+    this.price.toString()
 )
