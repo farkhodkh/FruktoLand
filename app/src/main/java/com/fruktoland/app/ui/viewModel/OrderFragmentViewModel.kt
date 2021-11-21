@@ -31,9 +31,17 @@ class OrderFragmentViewModel @Inject constructor(private var interactor: ModuleI
             }
             .onEach { list ->
                 list?.let {
-                    _state.tryEmit(OrderDataUpdate("Список обновлен", it))
+                    if (it.isEmpty()) {
+                        _state.tryEmit(OrderError("Ваша корзина пуста"))
+                    } else {
+                        _state.tryEmit(OrderDataUpdate("Список обновлен", it))
+                    }
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    fun setDefaultState() {
+        _state.tryEmit(OrderDefault("Default state"))
     }
 }

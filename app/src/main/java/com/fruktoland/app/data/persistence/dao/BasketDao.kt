@@ -15,6 +15,6 @@ internal interface BasketDao {
     @Query("SELECT * FROM ${BasketModule.Database.TABLE_NAME} ORDER BY ${BasketModule.Database.COL_NAME}")
     suspend fun getAllItems(): List<BasketModule>?
 
-    @Delete
+    @Query("DELETE FROM ${BasketModule.Database.TABLE_NAME}")
     suspend fun removeAllItems()
 }

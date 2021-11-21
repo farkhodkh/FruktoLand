@@ -71,6 +71,7 @@ class OrderAdapter @Inject constructor(
     inner class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var txtName: TextView = itemView.findViewById(R.id.txtName)
+        private var txtVPrice: TextView = itemView.findViewById(R.id.txtVPrice)
         private var txtVTotal: TextView = itemView.findViewById(R.id.txtVTotal)
         private var txtVUnit: TextView = itemView.findViewById(R.id.txtVUnit)
         private var txtViewQtty: TextView = itemView.findViewById(R.id.txtViewQtty)
@@ -80,6 +81,7 @@ class OrderAdapter @Inject constructor(
         fun bind(basketItem: BasketItem) {
             txtName.text = basketItem.name
             txtVUnit.text = basketItem.unit
+            txtVPrice.text = basketItem.price.toString()
             txtVTotal.text = (basketItem.price * basketItem.qtty).toString()
             txtViewQtty.text = basketItem.qtty.toString()
 

@@ -1,77 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="6dp">
+    android:padding="3dp">
 
     <TextView
         android:id="@+id/txtName"
-        android:layout_width="165dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Наименование"
         android:inputType="textMultiLine"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        tools:text="Яблоки (Голден) выращены высоко в горах" />
+        android:maxWidth="180dp"
+        android:maxLines="3"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Яблоки (Голден) выращены высоко в горах dfb fgb dfgh  dghdh dfgh dghdh dgfh" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:gravity="center">
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@+id/prices"
+        app:layout_constraintStart_toEndOf="@+id/txtName"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnMinus"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/ic_minus" />
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_minus"
+            android:paddingStart="6dp" />
 
         <TextView
             android:id="@+id/txtViewQtty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="1"
             android:text="0"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/btnPlus"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="6dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:background="@drawable/ic_plus" />
+
+        <TextView
+            android:id="@+id/txtVUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="14sp"
+            tools:text="кг." />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtVUnit"
+    <LinearLayout
+        android:id="@+id/prices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:textSize="16sp"
-        tools:text="кг." />
+        android:layout_marginRight="3dp"
+        android:gravity="right"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/txtVTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:text="200" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:text=" р."
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:text=" р." />
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_price"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txtVPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="3dp"
+                    android:textSize="16sp"
+                    tools:text="200" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="3dp"
+                    android:text=" р."
+                    android:textSize="16sp"
+                    tools:text=" р." />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_total"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txtVTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="3dp"
+                    android:textSize="16sp"
+                    tools:text="200" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="3dp"
+                    android:text=" р."
+                    android:textSize="16sp"
+                    tools:text=" р." />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

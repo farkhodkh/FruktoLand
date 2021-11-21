@@ -106,6 +106,7 @@ class OrderFragment : Fragment() {
                     showToastMessage(viewState.description)
                 }
                 is OrderDataUpdate -> {
+                    binding.btnConfirm.isEnabled = true
                     adapter.differ.submitList(viewState.itemsList.toMutableList())
                     //binding.orderListRecyclerView.smoothScrollToPosition(adapter.itemCount)
                 }
@@ -118,5 +119,10 @@ class OrderFragment : Fragment() {
         requireContext().also { context ->
             Toast.makeText(context, description, Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.setDefaultState()
     }
 }

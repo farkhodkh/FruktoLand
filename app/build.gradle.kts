@@ -1,5 +1,3 @@
-import org.gradle.internal.impldep.org.bouncycastle.asn1.iana.IANAObjectIdentifiers.experimental
-
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
@@ -24,7 +22,12 @@ android {
     }
 
     lintOptions {
-        disable ("TypographyFractions","TypographyQuotes", "UnsafeExperimentalUsageError", "UnsafeExperimentalUsageWarning")
+        disable(
+            "TypographyFractions",
+            "TypographyQuotes",
+            "UnsafeExperimentalUsageError",
+            "UnsafeExperimentalUsageWarning"
+        )
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -35,8 +38,8 @@ android {
         applicationId = "com.fruktoland.app"
         minSdkVersion(Versions.minSdkVersion)
         targetSdkVersion(31)
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -48,7 +51,9 @@ android {
 
     buildTypes {
         getByName("debug") {
-            isTestCoverageEnabled = true
+            isTestCoverageEnabled = false
+            isMinifyEnabled = false
+            isDebuggable =  true
         }
 
         getByName("release") {
@@ -79,16 +84,16 @@ android {
 dependencies {
 
     implementation("androidx.core:core-ktx:${Versions.androidxCoreKtx}")
-    implementation ("androidx.appcompat:appcompat:${Versions.androidxAppcompat}")
-    implementation ("com.google.android.material:material:${Versions.androidMaterial}")
-    implementation ("androidx.constraintlayout:constraintlayout:${Versions.androidxConstraintlayout}")
+    implementation("androidx.appcompat:appcompat:${Versions.androidxAppcompat}")
+    implementation("com.google.android.material:material:${Versions.androidMaterial}")
+    implementation("androidx.constraintlayout:constraintlayout:${Versions.androidxConstraintlayout}")
     implementation("com.google.firebase:firebase-common-ktx:20.0.0")
 //    testImplementation ("junit:junit:4.+")
 //    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
 //    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
 
     //Firebase
-    implementation ("com.google.firebase:firebase-bom:${Versions.firebaseVersion}")
+    implementation("com.google.firebase:firebase-bom:${Versions.firebaseVersion}")
     implementation("com.google.firebase:firebase-analytics:${Versions.firebaseAnalyticsVersion}")
     implementation("com.google.firebase:firebase-messaging:${Versions.firebaseMessagingVersion}")
 //    implementation ("com.google.firebase:firebase-messaging-ktx:${Versions.firebaseVersion}")
@@ -96,8 +101,8 @@ dependencies {
 //    implementation ("com.google.firebase:firebase-analytics-ktx:${Versions.firebaseVersion}")
 
     //Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:${Versions.navVersion}")
-    implementation ("androidx.navigation:navigation-ui-ktx:${Versions.navVersion}")
+    implementation("androidx.navigation:navigation-fragment-ktx:${Versions.navVersion}")
+    implementation("androidx.navigation:navigation-ui-ktx:${Versions.navVersion}")
 
     implementation("androidx.constraintlayout:constraintlayout:${Versions.androidxConstraintlayout}")
     implementation("com.afollestad.material-dialogs:core:${Versions.materialDialogs}")
@@ -124,16 +129,16 @@ dependencies {
 //    kapt("com.google.dagger:hilt-android-compiler:${Versions.hiltVersion}")
 //    kapt("com.google.dagger:hilt-compiler:${Versions.hiltVersion}")
 
-    implementation ("com.google.dagger:hilt-android:2.40")
-    kapt ("com.google.dagger:hilt-compiler:2.40")
+    implementation("com.google.dagger:hilt-android:2.40")
+    kapt("com.google.dagger:hilt-compiler:2.40")
 
     // For instrumentation tests
-    androidTestImplementation  ("com.google.dagger:hilt-android-testing:2.40")
-    kaptAndroidTest ("com.google.dagger:hilt-compiler:2.40")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.40")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.40")
 
     // For local unit tests
-    testImplementation ("com.google.dagger:hilt-android-testing:2.40")
-    kaptTest ("com.google.dagger:hilt-compiler:2.40")
+    testImplementation("com.google.dagger:hilt-android-testing:2.40")
+    kaptTest("com.google.dagger:hilt-compiler:2.40")
 
     //Logger
     implementation("org.slf4j:slf4j-api:${Versions.slf4jVersion}")
@@ -153,17 +158,17 @@ dependencies {
     androidTestImplementation("androidx.room:room-testing:${Versions.roomVersion}")
 
     //Input Mask library
-    implementation ("com.redmadrobot:input-mask-android:${Versions.inputMaskVersion}")
-    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
+    implementation("com.redmadrobot:input-mask-android:${Versions.inputMaskVersion}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
 
     //Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
+    implementation("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
     implementation("com.squareup.retrofit2:converter-gson:${Versions.retrofitVersion}")
     implementation("com.google.code.gson:gson:${Versions.gsonVersion}")
-    implementation ("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${Versions.retrofit2CoroutinesVersion}")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${Versions.retrofit2CoroutinesVersion}")
 
     //Picasso
-    implementation ("com.squareup.picasso:picasso:${Versions.picassoVersion}")
+    implementation("com.squareup.picasso:picasso:${Versions.picassoVersion}")
 
 }
 

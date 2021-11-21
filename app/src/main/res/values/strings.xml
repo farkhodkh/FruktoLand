@@ -17,4 +17,8 @@
     <string name="others">Прочее</string>
     <string name="others_description">Молоко, масло и пр.</string>
     <string name="title_goods">Товары</string>
+    <string name="order_send_success">Мы приняли ваш заказ. Спасибо</string>
+    <string name="order_send_error">Ошибка получения заказа. Попробуйте еще раз пожалуйста</string>
+    <string name="title_total">Сумма:</string>
+    <string name="title_price">Цена:</string>
 </resources>

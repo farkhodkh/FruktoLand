@@ -61,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@color/main_green"
+        android:enabled="false"
         android:text="Подтвердить"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

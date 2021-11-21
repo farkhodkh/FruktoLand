@@ -19,14 +19,13 @@ class FruktoLandApiService {
         service = getApiService()
     }
 
-    val logger = LoggerFactory.getLogger(this::class.java.canonicalName)
-
     companion object {
         private val authInterceptor = object : Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val newRequest = chain.request()
                     .newBuilder()
                     .addHeader("Authorization", "Basic " + Const.TOKEN)
+                    .addHeader("Content-Type", "application/json")
                     .build()
 
                 return chain.proceed(newRequest)
