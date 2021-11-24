@@ -35,8 +35,12 @@
         android:label="CatalogFragment">
         <argument
             android:name="catalogName"
-            app:argType="com.fruktoland.app.common.CatalogNames"
-            app:nullable="true" />
+            app:argType="string"
+            app:nullable="false" />
+        <argument
+            android:name="catalogId"
+            app:argType="long"
+            app:nullable="false" />
         <action
             android:id="@+id/action_catalogFragment_to_mainFragment"
             app:destination="@id/mainFragment" />

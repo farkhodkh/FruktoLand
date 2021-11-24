@@ -57,5 +57,7 @@ class FruktoLandApiService {
                 throw RuntimeException(e)
             }
         }
+
+        const val version = "v1"
     }
 }

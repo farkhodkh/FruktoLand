@@ -8,21 +8,29 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import com.fruktoland.app.R
 import com.fruktoland.app.common.*
 import com.fruktoland.app.databinding.FragmentMainBinding
 import com.fruktoland.app.extensions.navigate
+import com.fruktoland.app.ui.adapter.CatalogAdapter
+import com.fruktoland.app.ui.state.MainDataUpdate
 import com.fruktoland.app.ui.state.MainDefault
+import com.fruktoland.app.ui.state.MainEmpty
 import com.fruktoland.app.ui.state.MainError
 import com.fruktoland.app.ui.viewModel.MainFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
 
     private val viewModel: MainFragmentViewModel by activityViewModels()
+
+    @Inject
+    lateinit var catalogAdapter: CatalogAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,17 +39,12 @@ class MainFragment : Fragment() {
     ): View {
 
         binding = FragmentMainBinding.inflate(inflater, container, false)
-        binding.fruitsItem.setOnClickListener { view -> onHomeItemClicked(view) }
-        binding.vegetablesItem.setOnClickListener { view -> onHomeItemClicked(view) }
-        binding.berriesItem.setOnClickListener { view -> onHomeItemClicked(view) }
-        binding.saladsItem.setOnClickListener { view -> onHomeItemClicked(view) }
-        binding.meatItem.setOnClickListener { view -> onHomeItemClicked(view) }
-        binding.nutsItem.setOnClickListener { view -> onHomeItemClicked(view) }
-        binding.othersItem.setOnClickListener { view -> onHomeItemClicked(view) }
+        binding.catalogRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.catalogRecyclerView.adapter = catalogAdapter
 
+        catalogAdapter.onClickAction = this::onHomeItemClicked
         lifecycleScope.launchWhenCreated {
-//            initView()
-//            viewModel.checkServiceState()
+            viewModel.getCatalogs()
         }
 
         lifecycleScope.launchWhenStarted {
@@ -57,6 +60,13 @@ class MainFragment : Fragment() {
                 is MainDefault -> {
 
                 }
+                is MainEmpty -> {
+
+                }
+                is MainDataUpdate -> {
+                    catalogAdapter.catalogList = viewState.catalogs
+                    catalogAdapter.notifyDataSetChanged()
+                }
                 is MainError -> {
                     showToastMessage(viewState.description)
                 }
@@ -64,23 +74,23 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun onHomeItemClicked(view: View) {
+    private fun onHomeItemClicked(catalogName: String, catalogId: Long) {
         navigate(
-            MainFragmentDirections.actionMainFragmentToCatalogFragment(getCatalogName(view.id))
+            MainFragmentDirections.actionMainFragmentToCatalogFragment(catalogName, catalogId)
         )
     }
 
-    private fun getCatalogName(viewId: Int): CatalogNames =
-        when (viewId) {
-            R.id.berriesItem -> Barries()
-            R.id.fruitsItem -> Fruits()
-            R.id.vegetablesItem -> Vegetables()
-            R.id.saladsItem -> Salads()
-            R.id.meatItem -> Meats()
-            R.id.nutsItem -> Nuts()
-            R.id.othersItem -> Other()
-            else -> Unknown()
-        }
+//    private fun getCatalogName(viewId: Int): CatalogNames =
+//        when (viewId) {
+//            R.id.berriesItem -> Barries()
+//            R.id.catalogItem -> Fruits()
+//            R.id.vegetablesItem -> Vegetables()
+//            R.id.saladsItem -> Salads()
+//            R.id.meatItem -> Meats()
+//            R.id.nutsItem -> Nuts()
+//            R.id.othersItem -> Other()
+//            else -> Unknown()
+//        }
 
     private fun showToastMessage(description: String) {
         requireContext().also { context ->

@@ -1,94 +1,75 @@
 package com.fruktoland.app.ui.adapter
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fruktoland.app.R
 import com.fruktoland.app.common.Const
-import com.fruktoland.app.data.persistence.items.CatalogItem
+import com.fruktoland.app.data.persistence.items.CatalogHolderItem
+import com.fruktoland.app.ui.elements.HomeViewItem
 import com.fruktoland.app.ui.view.ModuleInteractor
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class CatalogAdapter @Inject constructor(
     var interactor: ModuleInteractor
 ) : RecyclerView.Adapter<CatalogAdapter.CatalogViewHolder>() {
 
     private val picasso = Picasso.get()
-    var catalogList: List<CatalogItem> = emptyList()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {
+    var catalogList: List<CatalogHolderItem> = emptyList()
+    lateinit var onClickAction: (String, Long) -> Unit
+
+    val backgroundColors = mapOf(
+        0 to R.drawable.cercle_background_blue,
+        1 to R.drawable.cercle_background_brown,
+        2 to R.drawable.cercle_background_gray,
+        3 to R.drawable.cercle_background_pink,
+        4 to R.drawable.cercle_background_purple,
+        5 to R.drawable.cercle_background_red,
+        6 to R.drawable.cercle_background_white,
+        7 to R.drawable.cercle_background_yellow
+    )
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogAdapter.CatalogViewHolder {
         val itemView = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.catalog_recyclerview_item, parent, false)
         return CatalogViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: CatalogViewHolder, position: Int) {
-        holder.bind(catalogList[position])
-    }
-
     override fun getItemCount(): Int = catalogList.size
 
+    override fun onBindViewHolder(holderItem: CatalogAdapter.CatalogViewHolder, position: Int) {
+        holderItem.bind(catalogList[position])
+    }
+
     inner class CatalogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var imageView: ImageView = itemView.findViewById(R.id.imageView)
-        private var txtViewName: TextView = itemView.findViewById(R.id.txtViewName)
-        private var txtViewPrice: TextView = itemView.findViewById(R.id.txtViewPrice)
-        private var textViewUnit: TextView = itemView.findViewById(R.id.textViewUnit)
-        private var txtViewDescription: TextView = itemView.findViewById(R.id.txtViewDescription)
-        private var txtViewQtty: TextView = itemView.findViewById(R.id.txtViewQtty)
-        private var btnMinus: ImageButton = itemView.findViewById(R.id.btnMinus)
-        private var btnPlus: ImageButton = itemView.findViewById(R.id.btnPlus)
 
-        fun bind(catalogItem: CatalogItem) {
-            btnMinus.setOnClickListener { onButtonClick(false, catalogItem) }
-            btnPlus.setOnClickListener { onButtonClick(true, catalogItem) }
-            if (!catalogItem.imageAddress.isNullOrEmpty()) {
-                picasso.load("${Const.BASE_URL}${catalogItem.imageAddress}").into(imageView)
+        val imageIcon = itemView.findViewById<ImageView>(R.id.image_icon)
+        val imageTextView = itemView.findViewById<TextView>(R.id.image_text)
+        val imageTextViewDescription = itemView.findViewById<TextView>(R.id.image_text_description)
+
+        fun bind(catalogItem: CatalogHolderItem) {
+            if (!catalogItem.imageAddress.isEmpty()) {
+                picasso.load("${Const.BASE_URL}${catalogItem.imageAddress}").into(imageIcon)
             } else {
-                imageView.setImageResource(R.drawable.ic_no_phote)
+                imageIcon.setImageResource(R.drawable.ic_no_phote)
             }
-            txtViewName.text = catalogItem.name
-            txtViewPrice.text = catalogItem.price.toString()
-            textViewUnit.text = "цена за ${catalogItem.unit}"
-            txtViewDescription.text = catalogItem.description
-            txtViewQtty.text = catalogItem.qtty.toString()
 
-            btnMinus.isEnabled = !txtViewName.text.isEmpty()
-            btnPlus.isEnabled = !txtViewName.text.isEmpty()
-        }
+            val imageIconBackground = getRandomBackground()
+            imageIcon.setBackgroundResource(imageIconBackground)
 
-        private fun onButtonClick(add: Boolean, catalogItem: CatalogItem) {
-            when (add) {
-                true -> {
-                    val qtty = txtViewQtty.text.toString().toDouble() + 1.0
-                    txtViewQtty.text = (qtty).toString()
-                    catalogItem.qtty = qtty
-                    interactor.addToBasket(catalogItem)
-                }
-                else -> {
-                    (txtViewQtty.text.toString().toDouble() - 1.0).also { qtty ->
-                        val qttyText = when {
-                            qtty <= 0 -> {
-                                interactor.removeFromBasket(catalogItem)
-                                "0.0"
-                            }
-                            else -> {
-                                catalogItem.qtty = qtty
-                                interactor.addToBasket(catalogItem)
-                                qtty.toString()
-                            }
-                        }
+            imageTextView.text = catalogItem.name
+            imageTextViewDescription.text = catalogItem.catalogDescription
 
-                        txtViewQtty.text = qttyText
-                    }
-                }
-            }
+            itemView.setOnClickListener { onClickAction(catalogItem.name, catalogItem.id) }
         }
     }
+
+    fun getRandomBackground(): Int = backgroundColors.get((0..7).random()) ?: R.drawable.cercle_background_white
 }
+

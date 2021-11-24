@@ -2,7 +2,7 @@
     <string name="app_name">FruktoLand</string>
     <string name="title_home">Каталог</string>
     <string name="title_basket">Корзина</string>
-    <string name="fruits">Фрукты</string>
+    <string name="fruits">Фрукты, Всегда свежие</string>
     <string name="fruits_description">Всегда свежие</string>
     <string name="vegetables">Овощи</string>
     <string name="vegetables_description">Только что с грядки</string>

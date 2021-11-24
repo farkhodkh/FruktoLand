@@ -10,11 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.fruktoland.app.common.CatalogNames
 import com.fruktoland.app.databinding.CatalogFragmentBinding
-import com.fruktoland.app.ui.adapter.CatalogAdapter
+import com.fruktoland.app.ui.adapter.CatalogItemsAdapter
 import com.fruktoland.app.ui.state.CatalogDataUpdate
 import com.fruktoland.app.ui.state.CatalogDefault
 import com.fruktoland.app.ui.state.CatalogEmpty
@@ -28,10 +25,11 @@ import javax.inject.Inject
 class CatalogFragment : Fragment() {
     private lateinit var binding: CatalogFragmentBinding
     private val viewModel: CatalogFragmentViewModel by activityViewModels()
-    private val catalogName: CatalogNames? by lazy { CatalogFragmentArgs.fromBundle(requireArguments()).catalogName }
+    private val catalogName: String by lazy { CatalogFragmentArgs.fromBundle(requireArguments()).catalogName }
+    private val catalogId: Long by lazy {CatalogFragmentArgs.fromBundle(requireArguments()).catalogId }
 
     @Inject
-    lateinit var adapter: CatalogAdapter
+    lateinit var itemsAdapter: CatalogItemsAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,17 +37,17 @@ class CatalogFragment : Fragment() {
     ): View {
         binding = CatalogFragmentBinding.inflate(inflater, container, false)
 
-        binding.txtViewCatalogName.text = catalogName?.nameRu
+        binding.txtViewCatalogName.text = catalogName
 
         binding.catalogRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-        binding.catalogRecyclerView.adapter = adapter
+        binding.catalogRecyclerView.adapter = itemsAdapter
 
-        adapter.notifyDataSetChanged()
+        itemsAdapter.notifyDataSetChanged()
 
         lifecycleScope.launchWhenResumed {
             setStateDownloading(true)
             viewModel
-                .getCatalogItems(catalogName)
+                .getCatalogItems(catalogId.toString())
         }
 
         lifecycleScope.launchWhenStarted {
@@ -72,17 +70,17 @@ class CatalogFragment : Fragment() {
                 }
                 is CatalogError -> {
                     showToastMessage(viewState.description)
-                    adapter.catalogList = emptyList()
-                    adapter.notifyDataSetChanged()
+                    itemsAdapter.catalogItemsList = emptyList()
+                    itemsAdapter.notifyDataSetChanged()
                 }
                 is CatalogEmpty -> {
                     showToastMessage(viewState.description)
-                    adapter.catalogList = viewState.itemsList
-                    adapter.notifyDataSetChanged()
+                    itemsAdapter.catalogItemsList = viewState.itemsList
+                    itemsAdapter.notifyDataSetChanged()
                 }
                 is CatalogDataUpdate -> {
-                    adapter.catalogList = viewState.itemsList
-                    adapter.notifyDataSetChanged()
+                    itemsAdapter.catalogItemsList = viewState.itemsList
+                    itemsAdapter.notifyDataSetChanged()
                 }
             }
             setStateDownloading(false)

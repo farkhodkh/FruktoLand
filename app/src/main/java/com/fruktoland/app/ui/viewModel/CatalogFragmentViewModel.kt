@@ -2,7 +2,6 @@ package com.fruktoland.app.ui.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fruktoland.app.common.CatalogNames
 import com.fruktoland.app.common.Const
 import com.fruktoland.app.data.persistence.items.CatalogItem
 import com.fruktoland.app.ui.state.*
@@ -19,9 +18,9 @@ class CatalogFragmentViewModel @Inject constructor(private var interactor: Modul
     private val _state = MutableStateFlow<CatalogFragmentState>(CatalogDefault("Default state"))
     val state: StateFlow<CatalogFragmentState> = _state
 
-    fun getCatalogItems(catalogName: CatalogNames?) {
+    fun getCatalogItems(catalogId: String?) {
         viewModelScope.launch {
-            val catalogList: List<CatalogItem> = interactor.getCatalogItems(catalogName?.name)
+            val catalogList: List<CatalogItem> = interactor.getCatalogItems(catalogId)
 
             if (catalogList.isNotEmpty()) {
                 _state.tryEmit(CatalogDataUpdate("Каталог обновлен", catalogList))

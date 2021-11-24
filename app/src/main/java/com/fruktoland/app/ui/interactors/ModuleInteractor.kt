@@ -3,8 +3,10 @@ package com.fruktoland.app.ui.view
 import com.fruktoland.app.common.Const
 import com.fruktoland.app.data.api.FruktoLandApiService
 import com.fruktoland.app.data.mapper.ClientOrderRequest
+import com.fruktoland.app.data.mapper.toCatalogHolderItem
 import com.fruktoland.app.data.mapper.toCatalogItem
 import com.fruktoland.app.data.persistence.items.BasketItem
+import com.fruktoland.app.data.persistence.items.CatalogHolderItem
 import com.fruktoland.app.data.persistence.items.CatalogItem
 import com.fruktoland.app.data.persistence.model.CatalogModule
 import com.fruktoland.app.data.persistence.model.toBasketItem
@@ -31,6 +33,7 @@ interface ModuleInteractor {
     fun removeFromBasket(item: BasketItem)
     fun getAllFromBasket(): Flow<List<BasketItem>?>
     fun confirmOrder(order: ClientOrderRequest): Flow<Boolean>
+    suspend fun getCatalogs(): List<CatalogHolderItem>
 }
 
 class ModuleInteractorImpl(
@@ -39,9 +42,9 @@ class ModuleInteractorImpl(
 ) : ModuleInteractor {
     val scope = CoroutineScope(Dispatchers.IO)
     val logger = LoggerFactory.getLogger(this::class.java.canonicalName)
-    override suspend fun getCatalogItems(catalogName: String?): List<CatalogItem> {
+    override suspend fun getCatalogItems(catalogId: String?): List<CatalogItem> {
         val response = apiService
-            .service.getStockByCatalogName(catalogName ?: "")
+            .service.getStockByCatalogId(catalogId ?: "")
 
         if (response.isSuccessful) {
             val catalogItems = response.body()?.stock_lines?.map {
@@ -67,6 +70,19 @@ class ModuleInteractorImpl(
         return emptyList()
     }
 
+    override suspend fun getCatalogs(): List<CatalogHolderItem> {
+        val response = apiService
+            .service.getCatalogs()
+
+        if (response.isSuccessful) {
+            val catalogHolders = response.body()?.catalogs?.map {
+                it.toCatalogHolderItem()
+            }.orEmpty()
+
+            return catalogHolders
+        }
+        return emptyList()
+    }
     override suspend fun addCatalogItems(list: List<CatalogModule>) {
         scope.launch(Dispatchers.IO) {
             list.forEach { catalogModule ->
